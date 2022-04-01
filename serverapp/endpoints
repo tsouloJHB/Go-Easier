@@ -1,0 +1,7 @@
+curl --request POST 'http://localhost:5050/login' -d '{"username": "james","password":"1234567"}'  --include 
+curl --request POST 'http://localhost:5050/commute/entry' -d '{"token": "iatk0hphg2kup6jqzhf2","qrCode":"hdf4545bet45bgeg4","date":"2022-0101","entryGpsCoordinates":"234543"}'  --include
+curl --request POST 'http://localhost:5050/commute/exit' -d '{"token": "euewsfpywlhojaedputy","qrCode":"hdf4545bet45bgeg4","date":"2022-0101","entryGpsCoordinates":"234543","distance":"30","exitGpsTravel":"34234","exitBusStationId":"3kef",}'  --include
+curl --request POST 'http://localhost:5050/logout' -d '{"token": "fth8eljfgaz0pgtsuipi"}'  --include
+
+curl --request GET 'http://localhost:5050/wallet/ot9aptlgtgya86z0qausdf2'
+
