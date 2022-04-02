@@ -17,6 +17,7 @@ class Controller with ChangeNotifier {
   Future<http.Response> apisend(String email, String password) async {
     print(email);
     print(password);
+    String email1 = email.toString().trim();
     print('http://' + ipAdress + '/login');
     final response = await http.post(
       Uri.parse('http://' + ipAdress + '/login'),
@@ -24,8 +25,8 @@ class Controller with ChangeNotifier {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'password': email.toString(),
-        'email': password.toString(),
+        'email': email1,
+        'password': password.toString(),
       }),
     );
 
@@ -34,12 +35,10 @@ class Controller with ChangeNotifier {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
         loginResponse = true;
-        print(response.body);
+
         var jsonData = jsonDecode(response.body);
         //List<Quote> qu = [];
         notifyListeners();
-        print(jsonData);
-        print(jsonData['token']);
         login = loginModel(
             token: jsonData['token'].toString(),
             email: jsonData['email'].toString());
@@ -47,13 +46,13 @@ class Controller with ChangeNotifier {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
         loginResponse = false;
-        print(response.body);
         throw Exception(Error);
       }
     } on Exception catch (e) {
       // TODO
       print(e.toString());
     }
+
     return response;
   }
 
@@ -117,6 +116,47 @@ class Controller with ChangeNotifier {
       // TODO
       print(e.toString());
     }
+    return response;
+  }
+
+  Future<http.Response> signUp(
+      String email, String password, String username) async {
+    String email1 = email.toString().trim();
+    String username1 = username.toString().trim();
+    print(username1);
+    print('http://' + ipAdress + '/signup');
+    final response = await http.post(
+      Uri.parse('http://' + ipAdress + '/signup'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email1,
+        'password': password.toString(),
+        'username': username1,
+      }),
+    );
+
+    try {
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        // If the server did return a 201 CREATED response,
+        // then parse the JSON.
+        loginResponse = true;
+
+        var jsonData = jsonDecode(response.body);
+        //List<Quote> qu = [];
+        notifyListeners();
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+        loginResponse = false;
+        throw Exception(Error);
+      }
+    } on Exception catch (e) {
+      // TODO
+      print(e.toString());
+    }
+
     return response;
   }
 }

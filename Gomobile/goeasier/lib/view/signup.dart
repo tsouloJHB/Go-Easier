@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:goeasier/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'package:goeasier/view/loginPage.dart';
-
-
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key, this.title}) : super(key: key);
@@ -14,6 +14,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController _password = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _username = TextEditingController();
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -39,6 +42,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _entryField(String title, {bool isPassword = false}) {
+    var move = false;
+    var motion = false;
+    if (title == 'Password') {
+      move = true;
+      motion = true;
+    }
+    if (title == 'Username') {
+      motion = true;
+    }
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -53,6 +65,11 @@ class _SignUpPageState extends State<SignUpPage> {
             height: 10,
           ),
           TextField(
+              controller: move && motion
+                  ? _password
+                  : motion
+                      ? _username
+                      : _email,
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -65,18 +82,37 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _submitButton() {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.red, offset: Offset(2, 4), spreadRadius: 2)
+      child: Column(
+        children: [
+          // An enabled button
+          ElevatedButton(
+            child: const Text('Login'),
+            onPressed: () async {
+              String _user = _username.text;
+              String _email1 = _email.text;
+              String _pass1 = _password.text;
+              http.Response response =
+                  await controller.signUp(_email1, _pass1, _user);
+              if (response.statusCode == 201) {
+                setState(() {
+                  //print(response);
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                });
+              }
+
+              // setState(() {
+              //   //print(response);
+              //   if (controller.loginResponse) {
+              //     Navigator.push(context,
+              //         MaterialPageRoute(builder: (context) => MyHomePage()));
+              //   }
+              // });
+              // print(_pass);
+            },
+          ),
         ],
-      ),
-      child: Text(
-        'Register Now',
-        style: TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }

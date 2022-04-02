@@ -24,16 +24,21 @@ public class GoServerHandler {
     // .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static void login(Context context ){
+        
         Map<String, Object> viewModel =  new HashMap<>(Map.of());
         ObjectMapper mapper = new ObjectMapper();
+       
         try{
             Map<?, ?> map = mapper.readValue(context.body(), Map.class);
 
             String email = map.get("email").toString();
             String password  = map.get("password").toString();
-
+            System.out.println(email);
+            System.out.println(password);
             if(GoServer.dataBaseHandler.login(email, password)){
+                System.out.println("yea");
                 User user = GoServer.dataBaseHandler.getUserByEmailPassword(email, password);
+               
                 String token =GoServer.dataBaseHandler.getToken(user.getUserId());
                 viewModel.put("token", token);
                 viewModel.put("username", user.getUsername());

@@ -4,6 +4,7 @@ import 'package:goeasier/main.dart';
 import 'package:goeasier/view/welcomePage.dart';
 import 'package:goeasier/view/qrScan.dart';
 import 'package:provider/src/provider.dart';
+import 'package:goeasier/view/loginPage.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -60,23 +61,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 64),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: <Widget>[
-                  _buildHeader(),
-                  SizedBox(height: 16),
-                  _buildGradientBalanceCard(context),
-                  SizedBox(height: 24.0),
-                  _buildCategories(),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: <Widget>[
+                    _buildHeader(),
+                    SizedBox(height: 16),
+                    _buildGradientBalanceCard(context),
+                    SizedBox(height: 24.0),
+                    _buildCategories(),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 32),
-            _buildTransactionList(),
-          ],
+              SizedBox(height: 32),
+              _buildTransactionList(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -129,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Transaction",
+                      "Bus trips",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -148,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 _buildTransactionItem(
                   color: Colors.deepPurpleAccent,
                   iconData: Icons.photo_size_select_actual,
-                  title: "Electric Bill",
+                  title: "Park station to park station",
                   date: "Today",
                   amount: 11.5,
                 ),
@@ -219,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "R " + context.watch<Controller>().wallet.balance,
+              "R " + controller.wallet.balance,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -311,21 +314,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               title,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
+                overflow: TextOverflow.ellipsis,
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: 20,
+                fontSize: 10,
               ),
             )
           ],
         ),
         Spacer(),
         Text(
-          "-\$ $amount",
+          "-\R $amount",
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 10,
           ),
         ),
       ],
