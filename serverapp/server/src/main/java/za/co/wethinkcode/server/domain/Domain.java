@@ -25,10 +25,12 @@ public class Domain {
             System.out.println("good"); 
             UserDo user = GoServer.dataBaseHandler.getUserByToken(token);
             if(GoServer.dataBaseHandler.getJourneyByIdAndQcode(user.getId(), qrCode) != null){
+                System.out.println("found");
                 journeyRideDo =  GoServer.dataBaseHandler.getJourneyByIdAndQcode(user.getId(), qrCode);
             }else{
                 //create 
                 journeyRideDo = GoServer.dataBaseHandler.createJourneyRide(user.getId(), entryGpsTravel, qrCode);
+                System.out.println("create");
             }
         }
         return journeyRideDo;
